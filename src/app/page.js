@@ -1,101 +1,275 @@
 import Image from "next/image";
-
+import Link from "next/link";
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <>
+      <FarmerPlatformLandingPage/>
+    </>
   );
 }
+
+
+const FarmerPlatformLandingPage = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500">
+      <header className="bg-white shadow-lg">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <Link legacyBehavior href="/">
+                <a className="text-indigo-600 font-bold text-2xl">Farmer Platform</a>
+              </Link>
+            </div>
+            <div className="-mr-2 flex md:hidden">
+              <button
+                type="button"
+                className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                aria-expanded="false"
+              >
+                <span className="sr-only">Open main menu</span>
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  // stroke-width="2"
+                  // stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    // stroke-linecap="round"
+                    // stroke-linejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-6">
+                <Link legacyBehavior href="/government-schemes">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Government Schemes
+                  </a>
+                </Link>
+                <Link legacyBehavior href="/crop-insurance">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Crop Insurance
+                  </a>
+                </Link>
+                <Link legacyBehavior href="/crop-prediction">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Crop Prediction
+                  </a>
+                </Link>
+                <Link legacyBehavior href="/disease-detection">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Disease Detection
+                  </a>
+                </Link>
+                <Link legacyBehavior href="/cyclone-warning">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Cyclone Warning
+                  </a>
+                </Link>
+                <Link legacyBehavior href="/multilingual-support">
+                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                    Multilingual Support
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div className="md:hidden" id="mobile-menu">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <Link legacyBehavior href="/government-schemes">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Government Schemes
+              </a>
+            </Link>
+            <Link legacyBehavior href="/crop-insurance">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Crop Insurance
+              </a>
+            </Link>
+            <Link legacyBehavior href="/crop-prediction">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Crop Prediction
+              </a>
+            </Link>
+            <Link legacyBehavior   href="/disease-detection">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Disease Detection
+              </a>
+            </Link>
+            <Link legacyBehavior  href="/cyclone-warning">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Cyclone Warning
+              </a>
+            </Link>
+            <Link legacyBehavior href="/multilingual-support">
+              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Multilingual Support
+              </a>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+        <div className="sm:text-center lg:text-left">
+          <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <span className="block xl:inline">Empower Your Farm</span>
+            <span className="block text-indigo-600 xl:inline">with Farmer Platform</span>
+          </h1>
+          <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+            Unlock a suite of cutting-edge tools to maximize your farming potential. Explore government schemes, access crop insurance, predict optimal crops, detect diseases, and more.
+          </p>
+          <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div className="rounded-md shadow">
+              <Link legacyBehavior href="/get-started">
+                <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                  Get Started
+                </a>
+              </Link>
+            </div>
+            <div className="mt-3 sm:mt-0 sm:ml-3">
+              <Link legacyBehavior href="/learn-more">
+                <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10">
+                  Learn More
+                </a>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Government Schemes</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Explore and apply for government schemes for farmers.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Crop Insurance</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Access and apply for crop insurance schemes.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Crop Prediction</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Predict optimal crops based on soil, weather, and more.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Disease Detection</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Detect crop diseases and get fertilizer suggestions.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Cyclone Warning</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Get alerts for upcoming cyclones.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Multilingual Support</h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-indigo-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                // stroke="currentColor"
+              >
+                <path
+                  // stroke-linecap="round"
+                  // stroke-linejoin="round"
+                  // stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="mt-2 text-gray-500">Access the platform in multiple languages.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
