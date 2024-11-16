@@ -1,9 +1,11 @@
 "use client"
-import React, { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, ChevronDown, ChevronUp, ExternalLink, Loader2 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-// Mock data - In production, this would come from your API
+// Original schemes data remains the same
 const schemes = [
   {
     category: "Crop Insurance",
@@ -51,6 +53,41 @@ const schemes = [
     ]
   }
 ];
+
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center p-8">
+    <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+  </div>
+);
+
+const ErrorAlert = ({ message }) => (
+  <Alert variant="destructive" className="mb-6">
+    <AlertDescription>{message}</AlertDescription>
+  </Alert>
+);
+
+const LoanWaiverChart = ({ data }) => {
+  const chartData = data.map(item => ({
+    state: item.state_ut,
+    amount: item.actual_amount_waived__rs__crore_
+  }));
+
+  return (
+    <div className="h-96 w-full mt-4">
+      <ResponsiveContainer>
+        <BarChart data={chartData}>
+          <XAxis dataKey="state" />
+          <YAxis label={{ value: 'Amount (₹ Crore)', angle: -90, position: 'insideLeft' }} />
+          <Tooltip 
+            formatter={(value) => `₹${value.toLocaleString()} Crore`}
+            labelStyle={{ color: 'black' }}
+          />
+          <Bar dataKey="amount" fill="#3b82f6" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 const SchemeCard = ({ scheme }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -108,9 +145,67 @@ const SchemeCard = ({ scheme }) => {
   );
 };
 
+const LoanWaiverCard = ({ data }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <Card className="mb-4">
+      <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-medium">
+            {data.state_ut} - {data.name_of_the_debt_waiver_scheme_since_2014}
+          </CardTitle>
+          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </div>
+      </CardHeader>
+      {isExpanded && (
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-xl font-semibold text-blue-600">
+              Amount Waived: ₹{data.actual_amount_waived__rs__crore_.toLocaleString()} Crore
+            </p>
+          </div>
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
 const GovernmentSchemes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeTab, setActiveTab] = useState('schemes');
+  const [loanWaiverData, setLoanWaiverData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const API_URL = 'https://api.data.gov.in/resource/d7215e89-edc3-41ca-83bb-ce6fcc2be65a';
+  const API_KEY = '';
+
+  useEffect(() => {
+    const fetchLoanWaiverData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        console.log("calign");
+        const response = await fetch(`${API_URL}?api-key=${API_KEY}&format=json`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch loan waiver data');
+        }
+        const data = await response.json();
+        setLoanWaiverData(data.records);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching loan waiver data:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (activeTab === 'waivers') {
+      fetchLoanWaiverData();
+    }
+  }, [activeTab]);
 
   const categories = ['All', ...new Set(schemes.map(scheme => scheme.category))];
 
@@ -127,47 +222,100 @@ const GovernmentSchemes = () => {
     }))
     .filter(categoryGroup => categoryGroup.schemes.length > 0);
 
+  const filteredLoanWaivers = loanWaiverData.filter(waiver =>
+    waiver.state_ut.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    waiver.name_of_the_debt_waiver_scheme_since_2014.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Government Schemes for Farmers</h1>
       
       <div className="mb-6 space-y-4">
+        <div className="flex gap-4 mb-4">
+          <button
+            onClick={() => setActiveTab('schemes')}
+            className={`px-4 py-2 rounded-lg ${
+              activeTab === 'schemes'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Current Schemes
+          </button>
+          <button
+            onClick={() => setActiveTab('waivers')}
+            className={`px-4 py-2 rounded-lg ${
+              activeTab === 'waivers'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Loan Waivers
+          </button>
+        </div>
+
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="Search schemes..."
+            placeholder={activeTab === 'schemes' ? "Search schemes..." : "Search loan waivers..."}
             className="w-full pl-10 pr-4 py-2 border rounded-lg"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {categories.map(category => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full whitespace-nowrap ${
-                selectedCategory === category
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        {activeTab === 'schemes' && (
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full whitespace-nowrap ${
+                  selectedCategory === category
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      {filteredSchemes.map(categoryGroup => (
-        <div key={categoryGroup.category} className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">{categoryGroup.category}</h2>
-          {categoryGroup.schemes.map(scheme => (
-            <SchemeCard key={scheme.id} scheme={scheme} />
-          ))}
+      {activeTab === 'schemes' ? (
+        filteredSchemes.map(categoryGroup => (
+          <div key={categoryGroup.category} className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">{categoryGroup.category}</h2>
+            {categoryGroup.schemes.map(scheme => (
+              <SchemeCard key={scheme.id} scheme={scheme} />
+            ))}
+          </div>
+        ))
+      ) : (
+        <div>
+          {error ? (
+            <ErrorAlert message={error} />
+          ) : isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Card className="mb-6">
+                <CardContent className="pt-6">
+                  <h3 className="text-xl font-semibold mb-4">State-wise Loan Waiver Distribution</h3>
+                  <LoanWaiverChart data={loanWaiverData} />
+                </CardContent>
+              </Card>
+              
+              {filteredLoanWaivers.map((waiver, index) => (
+                <LoanWaiverCard key={index} data={waiver} />
+              ))}
+            </>
+          )}
         </div>
-      ))}
+      )}
     </div>
   );
 };

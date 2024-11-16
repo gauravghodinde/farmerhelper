@@ -71,11 +71,7 @@ const FarmerPlatformLandingPage = () => {
                     Cyclone Warning
                   </a>
                 </Link>
-                <Link legacyBehavior href="/multilingual-support">
-                  <a className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    Multilingual Support
-                  </a>
-                </Link>
+               
               </div>
             </div>
           </div>
@@ -108,11 +104,7 @@ const FarmerPlatformLandingPage = () => {
                 Cyclone Warning
               </a>
             </Link>
-            <Link legacyBehavior href="/multilingual-support">
-              <a className="text-gray-900 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                Multilingual Support
-              </a>
-            </Link>
+            
           </div>
         </div>
       </header>
@@ -247,26 +239,7 @@ const FarmerPlatformLandingPage = () => {
             </div>
             <p className="mt-2 text-gray-500">Get alerts for upcoming cyclones.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Multilingual Support</h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-indigo-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                // stroke="currentColor"
-              >
-                <path
-                  // stroke-linecap="round"
-                  // stroke-linejoin="round"
-                  // stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <p className="mt-2 text-gray-500">Access the platform in multiple languages.</p>
-          </div>
+          
         </div>
       </section>
     </div>
