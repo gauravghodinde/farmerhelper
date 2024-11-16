@@ -114,19 +114,15 @@ const PlantDiseaseDetection = () => {
     setError(null);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // In a real application, you would upload the image and get results from your API
-      // const formData = new FormData();
-      // formData.append('image', selectedImage);
-      // const response = await fetch('your-api-endpoint', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-      // const data = await response.json();
-      
-      setResults(mockDetection);
+      const formData = new FormData();
+      formData.append('file', selectedImage);
+      const response = await fetch('https://agro-vmcr.onrender.com/detect-disease', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      console.log(data);
+      setResults(data);
     } catch (err) {
       setError('Failed to analyze image. Please try again.');
     } finally {
@@ -240,10 +236,10 @@ const PlantDiseaseDetection = () => {
                 <div className="space-y-4">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <h3 className="text-lg font-semibold text-red-800">
-                      {results.disease}
+                      {results.predicted_class}
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
-                      <div className="flex-1 h-2 bg-gray-200 rounded">
+                      <div className="flex-1 h-2 bg-gray-200 rounded ">
                         <div
                           className="h-2 bg-red-500 rounded"
                           style={{ width: `${results.confidence}%` }}
@@ -253,34 +249,11 @@ const PlantDiseaseDetection = () => {
                         {results.confidence}% confidence
                       </span>
                     </div>
-                    <p className="text-sm text-red-700 mt-2">
-                      {results.description}
-                    </p>
+                  
+                  
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {results.remedies.map((remedy, index) => (
-                      <div
-                        key={index}
-                        className="bg-green-50 border border-green-200 rounded-lg p-4"
-                      >
-                        <h4 className="text-sm font-semibold text-green-800 flex items-center gap-2">
-                          <Sprout className="h-4 w-4" />
-                          {remedy.type} Treatment
-                        </h4>
-                        <ul className="mt-2 space-y-1">
-                          {remedy.products.map((product, idx) => (
-                            <li key={idx} className="text-sm text-green-700">
-                              • {product}
-                            </li>
-                          ))}
-                        </ul>
-                        <p className="text-xs text-green-700 mt-2">
-                          {remedy.instructions}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+                  
                 </div>
               </CardContent>
             </Card>
@@ -298,21 +271,9 @@ const PlantDiseaseDetection = () => {
                     <h4 className="font-semibold text-blue-800">
                       Recommended Fertilizers
                     </h4>
-                    <div className="mt-2 space-y-3">
-                      {results.fertilizers.map((fertilizer, index) => (
-                        <div key={index} className="text-sm">
-                          <p className="font-medium text-blue-700">
-                            {fertilizer.name}
-                          </p>
-                          <p className="text-blue-600">
-                            Purpose: {fertilizer.purpose}
-                          </p>
-                          <p className="text-blue-600 text-xs">
-                            Application: {fertilizer.application}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-sm text-blue-700 mt-2">
+                      {results.fertilizer_recommendation}
+                    </p>
                   </div>
 
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -320,15 +281,9 @@ const PlantDiseaseDetection = () => {
                       Preventive Measures
                     </h4>
                     <ul className="mt-2 space-y-1">
-                      {results.preventiveMeasures.map((measure, index) => (
-                        <li
-                          key={index}
-                          className="text-sm text-yellow-700 flex items-start gap-2"
-                        >
-                          <span className="select-none">•</span>
-                          {measure}
-                        </li>
-                      ))}
+                    <p className="text-sm text-red-700 mt-2">
+                      {results.treatment_recommendation}
+                    </p>
                     </ul>
                   </div>
                 </div>

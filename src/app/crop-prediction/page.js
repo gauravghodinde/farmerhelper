@@ -33,6 +33,7 @@ const CropPrediction = () => {
     setError(null);
 
     try {
+      console.log(JSON.stringify(formData));
       const response = await fetch('https://agro-vmcr.onrender.com/predict-crop', {
         method: 'POST',
         headers: {
@@ -46,6 +47,7 @@ const CropPrediction = () => {
       }
 
       const data = await response.json();
+      console.log(data);
       setPrediction(data);
     } catch (err) {
       setError(err.message);
@@ -55,13 +57,13 @@ const CropPrediction = () => {
   };
 
   const chartData = [
-    { name: 'Nitrogen', value: Number(formData.nitrogen) || 0 },
-    { name: 'Phosphorus', value: Number(formData.phosphorus) || 0 },
-    { name: 'Potassium', value: Number(formData.potassium) || 0 },
-    { name: 'pH', value: Number(formData.ph) * 10 || 0 },
-    { name: 'Rainfall', value: Number(formData.rainfall) / 10 || 0 },
-    { name: 'Temperature', value: Number(formData.temperature) || 0 },
-    { name: 'Humidity', value: Number(formData.humidity) || 0 }
+    { name: 'nitrogen', value: Number(formData.nitrogen) || 0 },
+    { name: 'phosphorus', value: Number(formData.phosphorus) || 0 },
+    { name: 'potassium', value: Number(formData.potassium) || 0 },
+    { name: 'ph', value: Number(formData.ph) * 10 || 0 },
+    { name: 'rainfall', value: Number(formData.rainfall) / 10 || 0 },
+    { name: 'temperature', value: Number(formData.temperature) || 0 },
+    { name: 'humidity', value: Number(formData.humidity) || 0 }
   ];
 
   return (
@@ -209,7 +211,7 @@ const CropPrediction = () => {
                       Recommended Crop
                     </h3>
                     <p className="text-2xl font-bold text-green-600 mt-2">
-                      {prediction.prediction}
+                      {prediction.predicted_crop}
                     </p>
                   </div>
 
