@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Camera
 } from 'lucide-react';
+import Navbar from '@/components/ui/navbar';
 
 const PlantDiseaseDetection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -141,6 +142,8 @@ const PlantDiseaseDetection = () => {
   };
 
   return (
+    <div className="min-h-screen bg-gradient-to-r from-green-400 to-emerald-500">
+      <Navbar />
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Leaf Disease Detection & Treatment</h1>
 
@@ -292,7 +295,8 @@ const PlantDiseaseDetection = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 

@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Leaf, Droplets, Thermometer, FlaskConical } from 'lucide-react';
-
+import Navbar from '@/components/ui/navbar';
 const CropPrediction = () => {
   const [formData, setFormData] = useState({
     nitrogen: '',
@@ -67,6 +67,8 @@ const CropPrediction = () => {
   ];
 
   return (
+    <div className="min-h-screen bg-gradient-to-r from-green-400 to-emerald-500">
+      <Navbar />
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Crop Prediction System</h1>
 
@@ -289,6 +291,7 @@ const CropPrediction = () => {
           </Card>
         </div>
       </div>
+    </div>
     </div>
   );
 };

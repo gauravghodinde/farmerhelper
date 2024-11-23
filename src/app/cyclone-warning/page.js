@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import Navbar from '@/components/ui/navbar';
 
 const CycloneWarningSystem = () => {
   const [currentAlert, setCurrentAlert] = useState(null);
@@ -26,56 +27,62 @@ const CycloneWarningSystem = () => {
 
   // Mock cyclone data - replace with real API data
   const mockCycloneData = {
-    id: "CYC-2024-001",
-    name: "Cyclone Marcus",
+    id: "CYC-2024-IND-001",
+    name: "Cyclone Biparjoy",
     severity: "severe",
     category: 4,
     currentStatus: {
-      windSpeed: 195, // km/h
-      pressure: 920, // hPa
-      rainfall: 300, // mm
-      temperature: 27, // °C
-      humidity: 85, // %
-      movement: "SW",
-      movementSpeed: 15, // km/h
+      windSpeed: 175, // km/h
+      pressure: 940, // hPa
+      rainfall: 250, // mm
+      temperature: 29, // °C
+      humidity: 90, // %
+      movement: "NW",
+      movementSpeed: 20, // km/h
     },
     location: {
-      latitude: "15.2°S",
-      longitude: "120.5°E",
-      distanceFromCoast: 150, // km
+      latitude: "16.0°N",
+      longitude: "71.5°E",
+      distanceFromCoast: 120, // km
     },
     forecast: {
       path: [
-        { time: "12:00", position: "15.2°S, 120.5°E", intensity: "Severe" },
-        { time: "18:00", position: "15.5°S, 120.2°E", intensity: "Severe" },
-        { time: "00:00", position: "15.8°S, 119.9°E", intensity: "Very Severe" },
+        { time: "12:00", position: "16.0°N, 71.5°E", intensity: "Severe" },
+        { time: "18:00", position: "16.4°N, 71.2°E", intensity: "Severe" },
+        { time: "00:00", position: "16.8°N, 70.9°E", intensity: "Very Severe" },
       ],
       expectedIntensification: true,
     },
     warnings: [
       {
         type: "Red Alert",
-        areas: ["Coastal Region 1", "Coastal Region 2"],
-        description: "Imminent severe impact expected. Take immediate shelter.",
-      }
+        areas: ["Mumbai", "Ratnagiri", "Sindhudurg"],
+        description: "Severe cyclone impact expected in coastal Maharashtra. Evacuate low-lying areas.",
+      },
+      {
+        type: "Orange Alert",
+        areas: ["Goa", "Veraval"],
+        description: "Cyclone likely to cause heavy rainfall and strong winds. Exercise caution.",
+      },
     ],
     safetyMeasures: [
-      "Evacuate to designated shelters immediately",
-      "Secure loose objects around properties",
-      "Stock up on essential supplies",
-      "Keep emergency contacts handy",
-      "Monitor official communications",
-      "Avoid coastal areas",
-      "Fill vehicles with fuel",
-      "Charge all communication devices",
+      "Evacuate low-lying and vulnerable areas promptly",
+      "Stay indoors and away from windows during the cyclone",
+      "Keep emergency kits ready with essential supplies",
+      "Listen to official weather updates and advisories",
+      "Secure outdoor objects that can be blown away",
+      "Stock up on drinking water and non-perishable food",
+      "Charge mobile phones and keep flashlights handy",
+      "Avoid venturing into the sea or coastal areas",
     ],
     emergencyContacts: [
-      { name: "Emergency Response", number: "000" },
-      { name: "Storm Control Room", number: "1800-111-222" },
-      { name: "Medical Emergency", number: "1800-333-444" },
+      { name: "NDMA Helpline", number: "1078" },
+      { name: "Coastal Emergency Response", number: "1800-123-456" },
+      { name: "Medical Emergency", number: "108" },
+      { name: "Indian Meteorological Department (IMD)", number: "1800-266-7337" },
     ],
   };
-
+  
   // Mock historical wind speed data for graph
   const mockHistoricalData = [
     { time: '00:00', windSpeed: 160 },
@@ -130,6 +137,8 @@ const CycloneWarningSystem = () => {
   }
 
   return (
+    <div className="min-h-screen bg-gradient-to-r from-green-400 to-emerald-500">
+      <Navbar />
     <div className="max-w-7xl mx-auto p-6">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Cyclone Warning System</h1>
@@ -358,6 +367,7 @@ const CycloneWarningSystem = () => {
           </Card>
         </div>
       )}
+    </div>
     </div>
   );
 };

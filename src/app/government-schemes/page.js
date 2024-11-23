@@ -1,19 +1,89 @@
 "use client"
-import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, ChevronUp, ExternalLink, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import Navbar from '@/components/ui/navbar';
 
-// Original schemes data remains the same
 const schemes = [
+  {
+    category: "Financial Assistance",
+    schemes: [
+      {
+        id: 1,
+        name: "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+        description: "Financial benefit of Rs. 6000/- per year transferred in three equal four-monthly installments into farmers' bank accounts through Direct Benefit Transfer (DBT) mode.",
+        eligibility: [
+          "Small and marginal farmers",
+          "Own cultivable land",
+          "Names in land records"
+        ],
+        applicationProcess: [
+          "Register on PM-KISAN portal",
+          "Submit land records",
+          "Verify Aadhaar details"
+        ],
+        deadline: "Rolling basis",
+        website: "https://pmkisan.gov.in"
+      },
+      {
+        id: 2,
+        name: "Pradhan Mantri Kisan MaanDhan Yojana (PM-KMY)",
+        description: "Provides Rs. 3,000 monthly pension to enrolled farmers once they reach 60 years of age.",
+        eligibility: [
+          "Farmers between 18 to 40 years",
+          "Must contribute Rs. 55 to Rs. 200 monthly until age 60"
+        ],
+        applicationProcess: [
+          "Registration through CSC",
+          "Registration through State Governments",
+          "Managed by Life Insurance Corporation (LIC)"
+        ],
+        deadline: "Ongoing",
+        website: "https://pmkmy.gov.in"
+      },
+      {
+        id: 3,
+        name: "Modified Interest Subvention Scheme (MISS)",
+        description: "Loans up to Rs.3 lakh at 7% interest per annum for one year, with additional 3% subvention for prompt repayment.",
+        eligibility: [
+          "All farmers eligible for agricultural loans",
+          "Must maintain good repayment record for additional benefits"
+        ],
+        applicationProcess: [
+          "Apply through participating banks",
+          "Submit required documents",
+          "Maintain timely repayment for additional benefits"
+        ],
+        deadline: "Year-round",
+        website: "https://agricoop.gov.in"
+      },
+      {
+        id: 4,
+        name: "Agriculture Infrastructure Fund (AIF)",
+        description: "Medium-to-long-term debt financing facility for post-harvest management infrastructure and community farming assets.",
+        eligibility: [
+          "Farmers",
+          "FPOs",
+          "Agri-entrepreneurs",
+          "Start-ups"
+        ],
+        applicationProcess: [
+          "Apply through online portal",
+          "Submit project proposal",
+          "Get approval from lending institutions"
+        ],
+        deadline: "Ongoing",
+        website: "https://agriinfra.dac.gov.in"
+      }
+    ]
+  },
   {
     category: "Crop Insurance",
     schemes: [
       {
-        id: 1,
-        name: "Pradhan Mantri Fasal Bima Yojana",
-        description: "Provides comprehensive insurance coverage against crop failure",
+        id: 5,
+        name: "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+        description: "Comprehensive crop insurance product covering all non-preventable natural risks from pre-sowing to post-harvest.",
         eligibility: [
           "All farmers including sharecroppers and tenant farmers",
           "Must have insurable interest in crops",
@@ -31,63 +101,60 @@ const schemes = [
     ]
   },
   {
-    category: "Financial Assistance",
+    category: "Non Monetary Schemes",
     schemes: [
       {
-        id: 2,
-        name: "PM-KISAN",
-        description: "Direct income support of ₹6000 per year to farmer families",
+        id: 6,
+        name: "Soil Health Card Scheme (SHC)",
+        description: "Provides farmers with Soil Health Cards detailing soil nutrient status and corrective measures to improve soil health.",
         eligibility: [
-          "Small and marginal farmers",
-          "Own cultivable land",
-          "Names in land records"
+          "All farmers",
+          "Must have agricultural land"
         ],
         applicationProcess: [
-          "Register on PM-KISAN portal",
-          "Submit land records",
-          "Verify Aadhaar details"
+          "Apply through local agriculture office",
+          "Submit soil samples",
+          "Receive soil health card"
         ],
-        deadline: "Rolling basis",
-        website: "https://pmkisan.gov.in"
+        deadline: "Throughout the year",
+        website: "https://soilhealth.dac.gov.in"
+      },
+      {
+        id: 7,
+        name: "Pradhan Mantri Krishi Sinchai Yojana (PMKSY)",
+        description: "Expands irrigation area, improves on-farm water management, and enhances water efficiency.",
+        eligibility: [
+          "Farmers in selected areas",
+          "Areas with irrigation potential"
+        ],
+        applicationProcess: [
+          "Apply through state agriculture department",
+          "Submit land details",
+          "Get project approval"
+        ],
+        deadline: "As per state announcements",
+        website: "https://pmksy.gov.in"
+      },
+      {
+        id: 8,
+        name: "National Agriculture Market (eNAM)",
+        description: "Online trading platform connecting APMC mandis for better price discovery and transparent transactions.",
+        eligibility: [
+          "Farmers",
+          "Traders",
+          "FPOs"
+        ],
+        applicationProcess: [
+          "Register on eNAM portal",
+          "Upload produce details",
+          "Participate in online trading"
+        ],
+        deadline: "Continuous",
+        website: "https://enam.gov.in"
       }
     ]
   }
 ];
-
-const LoadingSpinner = () => (
-  <div className="flex justify-center items-center p-8">
-    <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-  </div>
-);
-
-const ErrorAlert = ({ message }) => (
-  <Alert variant="destructive" className="mb-6">
-    <AlertDescription>{message}</AlertDescription>
-  </Alert>
-);
-
-const LoanWaiverChart = ({ data }) => {
-  const chartData = data.map(item => ({
-    state: item.state_ut,
-    amount: item.actual_amount_waived__rs__crore_
-  }));
-
-  return (
-    <div className="h-96 w-full mt-4">
-      <ResponsiveContainer>
-        <BarChart data={chartData}>
-          <XAxis dataKey="state" />
-          <YAxis label={{ value: 'Amount (₹ Crore)', angle: -90, position: 'insideLeft' }} />
-          <Tooltip 
-            formatter={(value) => `₹${value.toLocaleString()} Crore`}
-            labelStyle={{ color: 'black' }}
-          />
-          <Bar dataKey="amount" fill="#3b82f6" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
 
 const SchemeCard = ({ scheme }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -145,67 +212,9 @@ const SchemeCard = ({ scheme }) => {
   );
 };
 
-const LoanWaiverCard = ({ data }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  return (
-    <Card className="mb-4">
-      <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">
-            {data.state_ut} - {data.name_of_the_debt_waiver_scheme_since_2014}
-          </CardTitle>
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </div>
-      </CardHeader>
-      {isExpanded && (
-        <CardContent>
-          <div className="space-y-4">
-            <p className="text-xl font-semibold text-blue-600">
-              Amount Waived: ₹{data.actual_amount_waived__rs__crore_.toLocaleString()} Crore
-            </p>
-          </div>
-        </CardContent>
-      )}
-    </Card>
-  );
-};
-
 const GovernmentSchemes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [activeTab, setActiveTab] = useState('schemes');
-  const [loanWaiverData, setLoanWaiverData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const API_URL = 'https://api.data.gov.in/resource/d7215e89-edc3-41ca-83bb-ce6fcc2be65a';
-  const API_KEY = '';
-
-  useEffect(() => {
-    const fetchLoanWaiverData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        console.log("calign");
-        const response = await fetch(`${API_URL}?api-key=${API_KEY}&format=json`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch loan waiver data');
-        }
-        const data = await response.json();
-        setLoanWaiverData(data.records);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error fetching loan waiver data:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (activeTab === 'waivers') {
-      fetchLoanWaiverData();
-    }
-  }, [activeTab]);
 
   const categories = ['All', ...new Set(schemes.map(scheme => scheme.category))];
 
@@ -222,51 +231,25 @@ const GovernmentSchemes = () => {
     }))
     .filter(categoryGroup => categoryGroup.schemes.length > 0);
 
-  const filteredLoanWaivers = loanWaiverData.filter(waiver =>
-    waiver.state_ut.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    waiver.name_of_the_debt_waiver_scheme_since_2014.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">Government Schemes for Farmers</h1>
+    <div className="min-h-screen bg-gradient-to-r from-green-400 to-emerald-500">
+      <Navbar />
       
-      <div className="mb-6 space-y-4">
-        <div className="flex gap-4 mb-4">
-          <button
-            onClick={() => setActiveTab('schemes')}
-            className={`px-4 py-2 rounded-lg ${
-              activeTab === 'schemes'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Current Schemes
-          </button>
-          <button
-            onClick={() => setActiveTab('waivers')}
-            className={`px-4 py-2 rounded-lg ${
-              activeTab === 'waivers'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Loan Waivers
-          </button>
-        </div>
-
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="text"
-            placeholder={activeTab === 'schemes' ? "Search schemes..." : "Search loan waivers..."}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      <div className="max-w-4xl mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-8 text-white">Government Schemes for Farmers</h1>
         
-        {activeTab === 'schemes' && (
+        <div className="mb-6 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search schemes..."
+              className="w-full pl-10 pr-4 py-2 border rounded-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          
           <div className="flex gap-2 overflow-x-auto pb-2">
             {categories.map(category => (
               <button
@@ -275,47 +258,26 @@ const GovernmentSchemes = () => {
                 className={`px-4 py-2 rounded-full whitespace-nowrap ${
                   selectedCategory === category
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-white text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 {category}
               </button>
             ))}
           </div>
-        )}
-      </div>
-
-      {activeTab === 'schemes' ? (
-        filteredSchemes.map(categoryGroup => (
-          <div key={categoryGroup.category} className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">{categoryGroup.category}</h2>
-            {categoryGroup.schemes.map(scheme => (
-              <SchemeCard key={scheme.id} scheme={scheme} />
-            ))}
-          </div>
-        ))
-      ) : (
-        <div>
-          {error ? (
-            <ErrorAlert message={error} />
-          ) : isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              <Card className="mb-6">
-                <CardContent className="pt-6">
-                  <h3 className="text-xl font-semibold mb-4">State-wise Loan Waiver Distribution</h3>
-                  <LoanWaiverChart data={loanWaiverData} />
-                </CardContent>
-              </Card>
-              
-              {filteredLoanWaivers.map((waiver, index) => (
-                <LoanWaiverCard key={index} data={waiver} />
-              ))}
-            </>
-          )}
         </div>
-      )}
+
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6">
+          {filteredSchemes.map(categoryGroup => (
+            <div key={categoryGroup.category} className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">{categoryGroup.category}</h2>
+              {categoryGroup.schemes.map(scheme => (
+                <SchemeCard key={scheme.id} scheme={scheme} />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
