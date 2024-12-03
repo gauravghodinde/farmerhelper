@@ -19,7 +19,7 @@ import {
 import Navbar from "@/components/ui/navbar";
 
 const PlantDiseaseDetection = () => {
-  const [plantType, setPlantType] = useState(""); // Selected plant type
+  const [plantType, setPlantType] = useState(""); 
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);

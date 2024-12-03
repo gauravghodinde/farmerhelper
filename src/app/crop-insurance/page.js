@@ -83,7 +83,7 @@ import Navbar from '@/components/ui/navbar';
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium mb-1">Farmer's Name</label>
+            <label className="block text-sm font-medium mb-1">Farmer Name</label>
             <input
               type="text"
               className={`w-full p-2 border rounded-md ${errors.farmerName ? 'border-red-500' : 'border-gray-300'}`}
