@@ -19,6 +19,146 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/ui/navbar';
 
+const getWarningBgColor = (type) => {
+  const warningTypes = {
+    "Moderate": "bg-orange-100",
+    "Severe": "bg-red-100",
+    "Low": "bg-yellow-100"
+  };
+  return warningTypes[type] || "bg-gray-100";
+};
+
+const getWarningTextColor = (type) => {
+  const warningTypes = {
+    "Moderate": "text-orange-800",
+    "Severe": "text-red-800",
+    "Low": "text-yellow-800"
+  };
+  return warningTypes[type] || "text-gray-800";
+};
+
+
+const AlertCard = ({ alert }) => (
+  <Card className="mb-4">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-lg flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Shield className="h-5 w-5" />
+          {alert.event}
+        </div>
+        <span className={`text-sm px-3 py-1 rounded-full ${getWarningBgColor(alert.warningType)} ${getWarningTextColor(alert.warningType)}`}>
+          {alert.warningType}
+        </span>
+      </CardTitle>
+      <div className="text-sm text-gray-600">
+        Issued by: {alert.issuedBy}
+      </div>
+    </CardHeader>
+    <CardContent>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4">
+          {alert.warnings.map((warning, index) => (
+            <div
+              key={index}
+              className={`p-4 rounded-lg ${getWarningBgColor(alert.warningType)}`}
+            >
+              <h4 className="font-semibold flex items-center gap-2">
+                <AlertCircle className="h-4 w-4" />
+                {warning.type}
+              </h4>
+              <p className="text-sm mt-1">{warning.description}</p>
+              <div className="text-sm mt-2">
+                Affected areas: {warning.areas.join(', ')}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h4 className="font-semibold mb-3">Safety Measures</h4>
+          <ul className="space-y-2">
+            {alert.safetyMeasures.map((measure, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <Shield className="h-4 w-4 mt-1 text-blue-500" />
+                <span className="text-sm">{measure}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const WeatherAlerts = () => {
+  const activeWeatherData = {
+    alerts: [
+      {
+        issuedBy: "Govt. of Andhra Pradesh",
+        state: "Andhra Pradesh",
+        event: "Lightning",
+        warningType: "Moderate",
+        warnings: [
+          {
+            type: "Lightning Warning",
+            description: "Moderate to severe lightning activity expected in the following areas",
+            areas: ["Coastal Andhra Pradesh", "Rayalaseema"]
+          }
+        ],
+        safetyMeasures: [
+          "Stay indoors during lightning activity",
+          "Avoid open areas and tall objects",
+          "Unplug electronic devices",
+          "Keep away from windows and doors"
+        ]
+      },
+      {
+        issuedBy: "Govt. of Tamil Nadu",
+        state: "Tamil Nadu",
+        event: "Heavy Rainfall",
+        warningType: "Severe",
+        warnings: [
+          {
+            type: "Flood Warning",
+            description: "Heavy rainfall may lead to flooding in low-lying areas",
+            areas: ["Chennai", "Kanchipuram", "Tiruvallur"]
+          }
+        ],
+        safetyMeasures: [
+          "Avoid crossing flooded areas",
+          "Keep emergency supplies ready",
+          "Follow evacuation orders if issued",
+          "Store important documents in waterproof containers"
+        ]
+      },
+      {
+        issuedBy: "Govt. of Kerala",
+        state: "Kerala",
+        event: "High Waves",
+        warningType: "Low",
+        warnings: [
+          {
+            type: "Coastal Warning",
+            description: "High waves expected along the coast",
+            areas: ["Kozhikode", "Kannur", "Kasaragod"]
+          }
+        ],
+        safetyMeasures: [
+          "Avoid beach activities",
+          "Fishermen advised not to venture into sea",
+          "Keep distance from coastal areas",
+          "Follow local authority guidelines"
+        ]
+      }
+    ]
+  };
+  return (
+    <div className="">
+      {activeWeatherData.alerts.map((alert, index) => (
+        <AlertCard key={index} alert={alert} />
+      ))}
+    </div>
+  );
+};
 const CycloneWarningSystem = () => {
   const [currentAlert, setCurrentAlert] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
@@ -26,13 +166,16 @@ const CycloneWarningSystem = () => {
   const [selectedRegion, setSelectedRegion] = useState('coastal-region-1');
 
   // Mock cyclone data - replace with real API data
+
+  
+  
   const mockCycloneData = {
     id: "CYC-2024-IND-001",
-    name: "Cyclone Biparjoy",
-    severity: "severe",
-    category: 4,
+    name: "none",
+    severity: "none",
+    category: 0,
     currentStatus: {
-      windSpeed: 175, // km/h
+      windSpeed: 7, // km/h
       pressure: 940, // hPa
       rainfall: 250, // mm
       temperature: 29, // °C
@@ -85,11 +228,11 @@ const CycloneWarningSystem = () => {
   
   // Mock historical wind speed data for graph
   const mockHistoricalData = [
-    { time: '00:00', windSpeed: 160 },
-    { time: '03:00', windSpeed: 175 },
-    { time: '06:00', windSpeed: 185 },
-    { time: '09:00', windSpeed: 190 },
-    { time: '12:00', windSpeed: 195 },
+    { time: '00:00', windSpeed: 5 },
+    { time: '03:00', windSpeed: 6 },
+    { time: '06:00', windSpeed: 6 },
+    { time: '09:00', windSpeed: 6 },
+    { time: '12:00', windSpeed: 7 },
   ];
 
   useEffect(() => {
@@ -149,7 +292,7 @@ const CycloneWarningSystem = () => {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Cyclone Warning System</h1>
         <div className="flex items-center gap-4">
-          <select
+          {/* <select
             value={selectedRegion}
             onChange={(e) => setSelectedRegion(e.target.value)}
             className="px-4 py-2 border rounded-md"
@@ -157,10 +300,11 @@ const CycloneWarningSystem = () => {
             <option value="coastal-region-1">Coastal Region 1</option>
             <option value="coastal-region-2">Coastal Region 2</option>
             <option value="coastal-region-3">Coastal Region 3</option>
-          </select>
+          </select> */}
           <div className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
-            <span className="text-sm">Last updated: {new Date().toLocaleTimeString()}</span>
+            <span className="text-sm">Last updated: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+
           </div>
         </div>
       </div>
@@ -300,7 +444,7 @@ const CycloneWarningSystem = () => {
           </Card>
 
           {/* Warnings and Safety Measures */}
-          <Card className="lg:col-span-2">
+          {/* <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
@@ -340,8 +484,10 @@ const CycloneWarningSystem = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
-
+          </Card> */}
+          <div className="col-span-2">
+          <WeatherAlerts/>
+          </div>
           {/* Emergency Contacts */}
           <Card>
             <CardHeader>
