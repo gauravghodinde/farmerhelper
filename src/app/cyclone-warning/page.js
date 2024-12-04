@@ -1,7 +1,7 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+"use client";
+import React, { useState, useEffect } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Wind,
   AlertTriangle,
@@ -15,28 +15,36 @@ import {
   Home,
   Phone,
   AlertCircle,
-} from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Navbar from '@/components/ui/navbar';
+} from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import Navbar from "@/components/ui/navbar";
 
 const getWarningBgColor = (type) => {
   const warningTypes = {
-    "Moderate": "bg-orange-100",
-    "Severe": "bg-red-100",
-    "Low": "bg-yellow-100"
+    Moderate: "bg-orange-100",
+    Severe: "bg-red-100",
+    Low: "bg-yellow-100",
   };
   return warningTypes[type] || "bg-gray-100";
 };
 
 const getWarningTextColor = (type) => {
   const warningTypes = {
-    "Moderate": "text-orange-800",
-    "Severe": "text-red-800",
-    "Low": "text-yellow-800"
+    Moderate: "text-orange-800",
+    Severe: "text-red-800",
+    Low: "text-yellow-800",
   };
   return warningTypes[type] || "text-gray-800";
 };
-
 
 const AlertCard = ({ alert }) => (
   <Card className="mb-4">
@@ -46,13 +54,15 @@ const AlertCard = ({ alert }) => (
           <Shield className="h-5 w-5" />
           {alert.event}
         </div>
-        <span className={`text-sm px-3 py-1 rounded-full ${getWarningBgColor(alert.warningType)} ${getWarningTextColor(alert.warningType)}`}>
+        <span
+          className={`text-sm px-3 py-1 rounded-full ${getWarningBgColor(
+            alert.warningType
+          )} ${getWarningTextColor(alert.warningType)}`}
+        >
           {alert.warningType}
         </span>
       </CardTitle>
-      <div className="text-sm text-gray-600">
-        Issued by: {alert.issuedBy}
-      </div>
+      <div className="text-sm text-gray-600">Issued by: {alert.issuedBy}</div>
     </CardHeader>
     <CardContent>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -60,7 +70,9 @@ const AlertCard = ({ alert }) => (
           {alert.warnings.map((warning, index) => (
             <div
               key={index}
-              className={`p-4 rounded-lg ${getWarningBgColor(alert.warningType)}`}
+              className={`p-4 rounded-lg ${getWarningBgColor(
+                alert.warningType
+              )}`}
             >
               <h4 className="font-semibold flex items-center gap-2">
                 <AlertCircle className="h-4 w-4" />
@@ -68,7 +80,7 @@ const AlertCard = ({ alert }) => (
               </h4>
               <p className="text-sm mt-1">{warning.description}</p>
               <div className="text-sm mt-2">
-                Affected areas: {warning.areas.join(', ')}
+                Affected areas: {warning.areas.join(", ")}
               </div>
             </div>
           ))}
@@ -100,16 +112,17 @@ const WeatherAlerts = () => {
         warnings: [
           {
             type: "Lightning Warning",
-            description: "Moderate to severe lightning activity expected in the following areas",
-            areas: ["Coastal Andhra Pradesh", "Rayalaseema"]
-          }
+            description:
+              "Moderate to severe lightning activity expected in the following areas",
+            areas: ["Coastal Andhra Pradesh", "Rayalaseema"],
+          },
         ],
         safetyMeasures: [
           "Stay indoors during lightning activity",
           "Avoid open areas and tall objects",
           "Unplug electronic devices",
-          "Keep away from windows and doors"
-        ]
+          "Keep away from windows and doors",
+        ],
       },
       {
         issuedBy: "Govt. of Tamil Nadu",
@@ -119,16 +132,17 @@ const WeatherAlerts = () => {
         warnings: [
           {
             type: "Flood Warning",
-            description: "Heavy rainfall may lead to flooding in low-lying areas",
-            areas: ["Chennai", "Kanchipuram", "Tiruvallur"]
-          }
+            description:
+              "Heavy rainfall may lead to flooding in low-lying areas",
+            areas: ["Chennai", "Kanchipuram", "Tiruvallur"],
+          },
         ],
         safetyMeasures: [
           "Avoid crossing flooded areas",
           "Keep emergency supplies ready",
           "Follow evacuation orders if issued",
-          "Store important documents in waterproof containers"
-        ]
+          "Store important documents in waterproof containers",
+        ],
       },
       {
         issuedBy: "Govt. of Kerala",
@@ -139,17 +153,17 @@ const WeatherAlerts = () => {
           {
             type: "Coastal Warning",
             description: "High waves expected along the coast",
-            areas: ["Kozhikode", "Kannur", "Kasaragod"]
-          }
+            areas: ["Kozhikode", "Kannur", "Kasaragod"],
+          },
         ],
         safetyMeasures: [
           "Avoid beach activities",
           "Fishermen advised not to venture into sea",
           "Keep distance from coastal areas",
-          "Follow local authority guidelines"
-        ]
-      }
-    ]
+          "Follow local authority guidelines",
+        ],
+      },
+    ],
   };
   return (
     <div className="">
@@ -163,12 +177,11 @@ const CycloneWarningSystem = () => {
   const [currentAlert, setCurrentAlert] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRegion, setSelectedRegion] = useState('coastal-region-1');
-
+  const [selectedRegion, setSelectedRegion] = useState("coastal-region-1");
+  const [weatherData, setWeatherData] = useState(null);
+  // const [historicalData, setHistoricalData] = useState(null);
   // Mock cyclone data - replace with real API data
 
-  
-  
   const mockCycloneData = {
     id: "CYC-2024-IND-001",
     name: "none",
@@ -186,7 +199,7 @@ const CycloneWarningSystem = () => {
     location: {
       latitude: "16.0°N",
       longitude: "71.5°E",
-      distanceFromCoast: 120, // km
+      distanceFromCoast: 950, // km
     },
     forecast: {
       path: [
@@ -200,12 +213,14 @@ const CycloneWarningSystem = () => {
       {
         type: "Red Alert",
         areas: ["Mumbai", "Ratnagiri", "Sindhudurg"],
-        description: "Severe cyclone impact expected in coastal Maharashtra. Evacuate low-lying areas.",
+        description:
+          "Severe cyclone impact expected in coastal Maharashtra. Evacuate low-lying areas.",
       },
       {
         type: "Orange Alert",
         areas: ["Goa", "Veraval"],
-        description: "Cyclone likely to cause heavy rainfall and strong winds. Exercise caution.",
+        description:
+          "Cyclone likely to cause heavy rainfall and strong winds. Exercise caution.",
       },
     ],
     safetyMeasures: [
@@ -222,28 +237,24 @@ const CycloneWarningSystem = () => {
       { name: "NDMA Helpline", number: "1078" },
       { name: "Coastal Emergency Response", number: "1800-123-456" },
       { name: "Medical Emergency", number: "108" },
-      { name: "Indian Meteorological Department (IMD)", number: "1800-266-7337" },
+      {
+        name: "Indian Meteorological Department (IMD)",
+        number: "1800-266-7337",
+      },
     ],
   };
-  
+
   // Mock historical wind speed data for graph
-  const mockHistoricalData = [
-    { time: '00:00', windSpeed: 5 },
-    { time: '03:00', windSpeed: 6 },
-    { time: '06:00', windSpeed: 6 },
-    { time: '09:00', windSpeed: 6 },
-    { time: '12:00', windSpeed: 7 },
-  ];
 
   useEffect(() => {
     // Simulate API fetch
     const fetchData = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setCurrentAlert(mockCycloneData);
-        setHistoricalData(mockHistoricalData);
+        // setHistoricalData(mockHistoricalData);
       } catch (error) {
-        console.error('Error fetching cyclone data:', error);
+        console.error("Error fetching cyclone data:", error);
       } finally {
         setLoading(false);
       }
@@ -254,24 +265,67 @@ const CycloneWarningSystem = () => {
 
   const getSeverityColor = (severity) => {
     const colors = {
-      low: 'bg-yellow-500',
-      moderate: 'bg-orange-500',
-      severe: 'bg-red-500',
-      'very severe': 'bg-purple-500',
+      low: "bg-yellow-500",
+      moderate: "bg-orange-500",
+      severe: "bg-red-500",
+      "very severe": "bg-purple-500",
     };
-    return colors[severity.toLowerCase()] || 'bg-gray-500';
+    return colors[severity.toLowerCase()] || "bg-gray-500";
   };
 
   const getWarningBgColor = (type) => {
     const colors = {
-      'Red Alert': 'bg-red-50 border-red-200',
-      'Orange Alert': 'bg-orange-50 border-orange-200',
-      'Yellow Alert': 'bg-yellow-50 border-yellow-200',
+      "Red Alert": "bg-red-50 border-red-200",
+      "Orange Alert": "bg-orange-50 border-orange-200",
+      "Yellow Alert": "bg-yellow-50 border-yellow-200",
     };
-    return colors[type] || 'bg-gray-50 border-gray-200';
+    return colors[type] || "bg-gray-50 border-gray-200";
   };
+  // const [mockHistoricalData, updatemockHistoricalData] = useState(null);
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch(
+          "http://api.weatherapi.com/v1/current.json?key=4fb314b06f0f4f44b3f62306240412&q=lucknow&aqi=no"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+        const data = await response.json();
+        setWeatherData(data);
+        const newHistoricalData = [
+          {
+            time: "00:00",
+            windSpeed: data.current.gust_kph + 5,
+          },
+          {
+            time: "03:00",
+            windSpeed: data.current.gust_kph - 5,
+          },
+          {
+            time: "06:00",
+            windSpeed: data.current.gust_kph + 5,
+          },
+          {
+            time: "09:00",
+            windSpeed: data.current.gust_kph + 5,
+          },
+          {
+            time: "12:00",
+            windSpeed: data.current.gust_kph - 5,
+          },
+        ];
+        setHistoricalData(newHistoricalData);
+        setLoading(false);
+      } catch (err) {
+        // setError(err.message);
+        setLoading(false);
+      }
+    };
 
- 
+    fetchWeatherData();
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-blue-700">
@@ -288,11 +342,11 @@ const CycloneWarningSystem = () => {
     <div className="min-h-screen bg-gradient-to-r from-green-400 to-emerald-500">
       <Navbar />
 
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Cyclone Warning System</h1>
-        <div className="flex items-center gap-4">
-          {/* <select
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Cyclone Warning System</h1>
+          <div className="flex items-center gap-4">
+            {/* <select
             value={selectedRegion}
             onChange={(e) => setSelectedRegion(e.target.value)}
             className="px-4 py-2 border rounded-md"
@@ -301,150 +355,250 @@ const CycloneWarningSystem = () => {
             <option value="coastal-region-2">Coastal Region 2</option>
             <option value="coastal-region-3">Coastal Region 3</option>
           </select> */}
-          <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            <span className="text-sm">Last updated: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-
+            <div className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              <span className="text-sm">
+                Last updated:{" "}
+                {new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {currentAlert && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Alert Card */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="bg-red-50">
-              <CardTitle className="flex items-center gap-2 text-red-800">
-                <AlertTriangle className="h-6 w-6" />
-                Active Cyclone Warning
-              </CardTitle>
-              <div className="flex items-center gap-4 mt-2">
-                <span className="text-2xl font-bold text-red-800">
-                  {currentAlert.name}
-                </span>
-                <span className={`px-3 py-1 rounded-full text-white text-sm ${getSeverityColor(currentAlert.severity)}`}>
-                  Category {currentAlert.category}
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <Wind className="h-5 w-5" />
-                    <span>Wind Speed</span>
+        {currentAlert && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Alert Card */}
+            <Card className="lg:col-span-2">
+              <CardHeader className="bg-red-50">
+                <CardTitle className="flex items-center gap-2 text-red-800">
+                  <AlertTriangle className="h-6 w-6" />
+                  Active Cyclone Warning
+                </CardTitle>
+                <div className="flex items-center gap-4 mt-2">
+                  <span className="text-2xl font-bold text-red-800">
+                    {currentAlert.name}
+                  </span>
+                  {/* <span
+                    className={`px-3 py-1 rounded-full text-white text-sm ${getSeverityColor(
+                      currentAlert.severity
+                    )}`}
+                  >
+                    {/* Category {currentAlert.category} */}
+                  {/* </span> */} 
+                </div>
+              </CardHeader>
+              <CardContent className="mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <Wind className="h-5 w-5" />
+                      <span>Wind Speed</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {/* {currentAlert.currentStatus.windSpeed} km/h
+                       */}
+                      <span className="font-bold">
+                        {weatherData.current.gust_kph} km/h
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-2xl font-bold">
-                    {currentAlert.currentStatus.windSpeed} km/h
+
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <Navigation className="h-5 w-5" />
+                      <span>Movement</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {/* {currentAlert.currentStatus.movement} at {currentAlert.currentStatus.movementSpeed} km/h */}
+                      <span className="font-bold">
+                        {weatherData.current.wind_dir}{" "}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <MapPin className="h-5 w-5" />
+                      <span>Distance from Coast</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {currentAlert.location.distanceFromCoast} km
+                    </div>
                   </div>
                 </div>
 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <Navigation className="h-5 w-5" />
-                    <span>Movement</span>
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">
+                    Wind Speed Trend
+                  </h3>
+                  <div className="h-[300px]">
+                    {historicalData && (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={historicalData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="time" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey="windSpeed"
+                            stroke="#ef4444"
+                            strokeWidth={2}
+                            dot={{ r: 4 }}
+                            activeDot={{ r: 8 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    )}
                   </div>
-                  <div className="text-2xl font-bold">
-                    {currentAlert.currentStatus.movement} at {currentAlert.currentStatus.movementSpeed} km/h
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Current Conditions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {weatherData.location.name}, {weatherData.location.region}
+                </CardTitle>
+                <div className="text-sm text-gray-600">
+                  {weatherData.location.country} ({weatherData.location.lat},{" "}
+                  {weatherData.location.lon})
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ThermometerSun className="h-5 w-5 text-orange-500" />
+                      <span>Feels Like</span>
+                    </div>
+                    <span className="font-bold">
+                      {weatherData.current.feelslike_c}°C
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Droplets className="h-5 w-5 text-blue-500" />
+                      <span>Precipitation</span>
+                    </div>
+                    <span className="font-bold">
+                      {weatherData.current.precip_mm} mm
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Wind className="h-5 w-5 text-gray-500" />
+                      <span>Gust Speed</span>
+                    </div>
+                    <span className="font-bold">
+                      {weatherData.current.gust_kph} km/h
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="h-5 w-5 text-yellow-500" />
+                      <span>Condition</span>
+                    </div>
+                    <span className="font-bold">
+                      {weatherData.current.condition.text}
+                    </span>
                   </div>
                 </div>
 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <MapPin className="h-5 w-5" />
-                    <span>Distance from Coast</span>
-                  </div>
-                  <div className="text-2xl font-bold">
-                    {currentAlert.location.distanceFromCoast} km
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-4">Wind Speed Trend</h3>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={historicalData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line
-                        type="monotone"
-                        dataKey="windSpeed"
-                        stroke="#ef4444"
-                        strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 8 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Current Conditions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Current Conditions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ThermometerSun className="h-5 w-5 text-orange-500" />
-                    <span>Temperature</span>
-                  </div>
-                  <span className="font-bold">{currentAlert.currentStatus.temperature}°C</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Droplets className="h-5 w-5 text-blue-500" />
-                    <span>Humidity</span>
-                  </div>
-                  <span className="font-bold">{currentAlert.currentStatus.humidity}%</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Wind className="h-5 w-5 text-gray-500" />
-                    <span>Pressure</span>
-                  </div>
-                  <span className="font-bold">{currentAlert.currentStatus.pressure} hPa</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Droplets className="h-5 w-5 text-indigo-500" />
-                    <span>Rainfall</span>
-                  </div>
-                  <span className="font-bold">{currentAlert.currentStatus.rainfall} mm</span>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <h4 className="font-semibold mb-2">Forecast Track</h4>
-                <div className="space-y-3">
-                  {currentAlert.forecast.path.map((point, index) => (
-                    <div key={index} className="flex items-start gap-2">
-                      <ArrowRight className="h-5 w-5 text-gray-400 mt-0.5" />
-                      <div>
-                        <div className="font-medium">{point.time}</div>
-                        <div className="text-sm text-gray-600">{point.position}</div>
-                        <div className="text-sm text-gray-600">{point.intensity}</div>
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">Weather Condition</h4>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={`https:${weatherData.current.condition.icon}`}
+                      alt={weatherData.current.condition.text}
+                      className="w-16 h-16"
+                    />
+                    <div>
+                      <div className="font-medium">
+                        {weatherData.current.condition.text}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Local time: {weatherData.location.localtime}
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <Wind className="h-5 w-5" />
+                      <span>Wind Speed</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {weatherData.current.wind_kph} km/h
+                    </div>
+                  </div>
 
-          {/* Warnings and Safety Measures */}
-          {/* <Card className="lg:col-span-2">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <Navigation className="h-5 w-5" />
+                      <span>Wind Direction</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {weatherData.current.wind_dir}
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <ThermometerSun className="h-5 w-5" />
+                      <span>Temperature</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {weatherData.current.temp_c}°C
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">
+                    Current Conditions
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">Humidity</div>
+                      <div className="text-xl font-bold">
+                        {weatherData.current.humidity}%
+                      </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">Pressure</div>
+                      <div className="text-xl font-bold">
+                        {weatherData.current.pressure_mb} mb
+                      </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">Visibility</div>
+                      <div className="text-xl font-bold">
+                        {weatherData.current.vis_km} km
+                      </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">UV Index</div>
+                      <div className="text-xl font-bold">
+                        {weatherData.current.uv}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Warnings and Safety Measures */}
+            {/* <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
@@ -485,41 +639,44 @@ const CycloneWarningSystem = () => {
               </div>
             </CardContent>
           </Card> */}
-          <div className="col-span-2">
-          <WeatherAlerts/>
-          </div>
-          {/* Emergency Contacts */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Phone className="h-5 w-5" />
-                Emergency Contacts
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {currentAlert.emergencyContacts.map((contact, index) => (
-                  <div
-                    key={index}
-                    className="p-4 bg-gray-50 rounded-lg flex items-center justify-between"
-                  >
-                    <span className="font-medium">{contact.name}</span>
-                    <span className="text-blue-600 font-bold">{contact.number}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="col-span-2">
+              <WeatherAlerts />
+            </div>
+            {/* Emergency Contacts */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Phone className="h-5 w-5" />
+                  Emergency Contacts
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {currentAlert.emergencyContacts.map((contact, index) => (
+                    <div
+                      key={index}
+                      className="p-4 bg-gray-50 rounded-lg flex items-center justify-between"
+                    >
+                      <span className="font-medium">{contact.name}</span>
+                      <span className="text-blue-600 font-bold">
+                        {contact.number}
+                      </span>
+                    </div>
+                  ))}
+                </div>
 
-              <Alert className="mt-6">
-                <AlertDescription>
-                  Stay tuned to local radio and TV broadcasts for updates. Follow instructions
-                  from emergency services and local authorities.
-                </AlertDescription>
-              </Alert>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-    </div>
+                <Alert className="mt-6">
+                  <AlertDescription>
+                    Stay tuned to local radio and TV broadcasts for updates.
+                    Follow instructions from emergency services and local
+                    authorities.
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
