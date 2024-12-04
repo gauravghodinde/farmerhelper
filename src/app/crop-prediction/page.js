@@ -159,7 +159,7 @@ const CropPrediction = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Rainfall (mm)</label>
+                  <label className="block text-sm font-medium mb-1">Rainfall (cm)</label>
                   <input
                     type="number"
                     name="rainfall"
@@ -254,7 +254,7 @@ const CropPrediction = () => {
                         Rainfall
                       </h4>
                       <p className="text-xl font-bold text-blue-600 mt-1">
-                        {formData.rainfall} mm
+                        {formData.rainfall} cm
                       </p>
                     </div>
                   </div>
