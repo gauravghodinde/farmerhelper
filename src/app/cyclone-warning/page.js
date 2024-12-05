@@ -176,17 +176,17 @@ const CycloneWarningSystem = () => {
     category: 0,
     currentStatus: {
       windSpeed: 7, // km/h
-      pressure: 940, // hPa
-      rainfall: 250, // mm
-      temperature: 29, // °C
-      humidity: 90, // %
+      // pressure: 940, // hPa
+      rainfall: "NIL", // mm
+      temperature: 29.3, // °C
+      humidity: 	68, // %
       movement: "NW",
       movementSpeed: 20, // km/h
     },
     location: {
       latitude: "16.0°N",
       longitude: "71.5°E",
-      distanceFromCoast: 120, // km
+      distanceFromCoast: 960, // km
     },
     forecast: {
       path: [
